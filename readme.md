@@ -1,6 +1,6 @@
-# Ciphers
+# Viterbi Decoder
 
-> In this program you can choose one of three ciphers and code or encode your sentence using them
+> My realization of Viterbi decoder
 
 ## Technology stack
 
@@ -11,11 +11,11 @@
 
 1. Clone the repository and change the directory
     ```
-    git clone https:https://github.com/Art33mis/Ciphers.git && cd Ciphers
+    git clone https://github.com/Art33mis/Coursework.git && cd Coursework
     ```
 2. Install dependencies
    ```
-   pip3 intall math
+   pip3 install math
    ```
 ### For Mac
  
@@ -27,14 +27,14 @@
 
 4. Launch web application
     ```
-    python3 main.py
+    python3 viterby_dec.py
     ```
     
 ### For Windows
 
 2. Launch web application
     ```
-    python main.py
+    python viterby_dec.py
     ```
 
 
