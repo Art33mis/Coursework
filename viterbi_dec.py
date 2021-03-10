@@ -1,4 +1,5 @@
 import math
+import numpy as np
 
 
 def get_min_num(a, b):
@@ -30,10 +31,10 @@ def hamming_distance(str1, str2):
 
 
 def get_cell(input_list, trellis):
-    cell = [[math.inf] * 4 for i in range(len(input_list) + 1)]
+    cell = np.array([[math.inf] * 4 for i in range(len(input_list) + 1)])
     cell[0][0] = 0
     for i in range(len(cell)):
-        for j in range(4):
+        for j in range(len(cell)):
             if j == 0 and i != 0:
                 cell[i][j] = get_min_num(hamming_distance(input_list[i - 1], trellis[0][0]) + cell[i - 1][0],
                                          hamming_distance(input_list[i - 1], trellis[0][1]) + cell[i - 1][2])
@@ -51,8 +52,8 @@ def get_cell(input_list, trellis):
 
 def decoder(input_str):
     input_list = input_str.split(" ")
-    trellis = [["00", "11"], ["11", "00"], ["01", "10"], ["10", "01"]]
-    way = [0 for i in range(len(input_list) + 1)]
+    trellis = np.array([["00", "11"], ["11", "00"], ["01", "10"], ["10", "01"]])
+    way = np.array([0 for i in range(len(input_list) + 1)])
     cell = get_cell(input_list, trellis)
     for i in range(len(cell)):
         way[i] = get_min_index(cell[i])
