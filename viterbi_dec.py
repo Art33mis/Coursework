@@ -2,6 +2,17 @@ import math
 import numpy as np
 
 
+def coder(input_str):
+    output_str = ""
+    shift_reg = "00"
+    for i in range(len(input_str)):
+        shift_reg = input_str[i] + shift_reg
+        output1 = (int(shift_reg[0]) + int(shift_reg[1]) + int(shift_reg[2])) % 2
+        output2 = (int(shift_reg[0]) + int(shift_reg[2])) % 2
+        output_str = output_str + str(output1) + str(output2) + " "
+    return output_str
+
+
 def get_min_num(a, b):
     if a >= b:
         return b
@@ -52,7 +63,7 @@ def get_cell(input_list, trellis):
 
 def decoder(input_str):
     input_list = input_str.split(" ")
-    trellis = np.array([["00", "11"], ["11", "00"], ["01", "10"], ["10", "01"]])
+    trellis = np.array([["00", "11"], ["11", "00"], ["10", "01"], ["01", "10"]])
     way = np.array([0 for i in range(len(input_list) + 1)])
     cell = get_cell(input_list, trellis)
     for i in range(len(cell)):
@@ -67,4 +78,4 @@ def decoder(input_str):
     return output_str
 
 
-print(decoder("11 10 01 11 01"))
+print(decoder("11 01 10 10 10"))
