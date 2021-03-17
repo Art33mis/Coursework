@@ -6,6 +6,7 @@
 
 - python3
 - Math
+- Numpy
 
 ## Launch instruction
 
@@ -16,6 +17,7 @@
 2. Install dependencies
    ```
    pip3 install math
+   pip3 install numpy
    ```
 ### For Mac
  
