@@ -3,8 +3,10 @@
 import math
 import numpy as np
 
+""" Basic method which code convolutional code with R = 1/2 """
 
-def coder(input_str):  # Basic method which code convolutional code with R = 1/2
+
+def coder(input_str):
     output_str = ""
     shift_reg = "00"
     for i in range(len(input_str)):
@@ -15,14 +17,10 @@ def coder(input_str):  # Basic method which code convolutional code with R = 1/2
     return output_str
 
 
-def get_min_num(a, b):  # This method return the smallest number in pair
-    if a >= b:
-        return b
-    if a < b:
-        return a
+""" This method return index of the smallest value in array """
 
 
-def get_min_index(cell):  # This method return index of the smallest value in array
+def get_min_index(cell):
     min_num = math.inf
     min_ind = 0
     for i in range(len(cell)):
@@ -35,7 +33,10 @@ def get_min_index(cell):  # This method return index of the smallest value in ar
     return min_ind
 
 
-def hamming_distance(str1, str2):  # Method return Hamming distance between to strings
+""" Method return Hamming distance between to strings """
+
+
+def hamming_distance(str1, str2):
     distance = 0
     for i in range(len(str1)):
         if str1[i] != str2[i]:
@@ -43,27 +44,33 @@ def hamming_distance(str1, str2):  # Method return Hamming distance between to s
     return distance
 
 
-def get_cell(input_list, trellis):  # This method return trellis diagram
+""" This method return trellis diagram """
+
+
+def get_cell(input_list, trellis):
     cell = np.array([[math.inf] * 4 for i in range(len(input_list) + 1)])
     cell[0][0] = 0
     for i in range(len(cell)):
         for j in range(len(cell)):
             if j == 0 and i != 0:
-                cell[i][j] = get_min_num(hamming_distance(input_list[i - 1], trellis[0][0]) + cell[i - 1][0],
-                                         hamming_distance(input_list[i - 1], trellis[0][1]) + cell[i - 1][2])
+                cell[i][j] = min(hamming_distance(input_list[i - 1], trellis[0][0]) + cell[i - 1][0],
+                                 hamming_distance(input_list[i - 1], trellis[0][1]) + cell[i - 1][2])
             elif j == 1 and i != 0:
-                cell[i][j] = get_min_num(hamming_distance(input_list[i - 1], trellis[1][0]) + cell[i - 1][0],
-                                         hamming_distance(input_list[i - 1], trellis[1][1]) + + cell[i - 1][2])
+                cell[i][j] = min(hamming_distance(input_list[i - 1], trellis[1][0]) + cell[i - 1][0],
+                                 hamming_distance(input_list[i - 1], trellis[1][1]) + + cell[i - 1][2])
             elif j == 2 and i > 1:
-                cell[i][j] = get_min_num(hamming_distance(input_list[i - 1], trellis[2][0]) + cell[i - 1][1],
-                                         hamming_distance(input_list[i - 1], trellis[2][1]) + + cell[i - 1][3])
+                cell[i][j] = min(hamming_distance(input_list[i - 1], trellis[2][0]) + cell[i - 1][1],
+                                 hamming_distance(input_list[i - 1], trellis[2][1]) + + cell[i - 1][3])
             elif j == 3 and i > 1:
-                cell[i][j] = get_min_num(hamming_distance(input_list[i - 1], trellis[3][0]) + cell[i - 1][1],
-                                         hamming_distance(input_list[i - 1], trellis[3][1]) + + cell[i - 1][3])
+                cell[i][j] = min(hamming_distance(input_list[i - 1], trellis[3][0]) + cell[i - 1][1],
+                                 hamming_distance(input_list[i - 1], trellis[3][1]) + + cell[i - 1][3])
     return cell
 
 
-def decoder(input_str):  # Basic method which decode convolutional code using Viterbi algorithm
+""" Basic method which decode convolutional code using Viterbi algorithm """
+
+
+def decoder(input_str):
     input_list = input_str.split(" ")
     trellis = np.array([["00", "11"], ["11", "00"], ["10", "01"], ["01", "10"]])
     way = np.array([0 for i in range(len(input_list) + 1)])
@@ -80,4 +87,5 @@ def decoder(input_str):  # Basic method which decode convolutional code using Vi
     return output_str
 
 
+print(coder("11111"))
 print(decoder("11 01 10 10 10"))
