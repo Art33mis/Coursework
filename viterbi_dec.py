@@ -3,10 +3,9 @@
 import math
 import numpy as np
 
-""" Basic method which code convolutional code with R = 1/2 """
-
 
 def coder(input_str):
+    """ Basic method which code convolutional code with R = 1/2 """
     output_str = ""
     shift_reg = "00"
     for i in range(len(input_str)):
@@ -17,10 +16,8 @@ def coder(input_str):
     return output_str
 
 
-""" This method return index of the smallest value in array """
-
-
 def get_min_index(cell):
+    """ This method return index of the smallest value in array """
     min_num = math.inf
     min_ind = 0
     for i in range(len(cell)):
@@ -33,10 +30,8 @@ def get_min_index(cell):
     return min_ind
 
 
-""" Method return Hamming distance between to strings """
-
-
 def hamming_distance(str1, str2):
+    """ Method return Hamming distance between to strings """
     distance = 0
     for i in range(len(str1)):
         if str1[i] != str2[i]:
@@ -44,10 +39,8 @@ def hamming_distance(str1, str2):
     return distance
 
 
-""" This method return trellis diagram """
-
-
 def get_cell(input_list, trellis):
+    """ This method return trellis diagram """
     cell = np.array([[math.inf] * 4 for i in range(len(input_list) + 1)])
     cell[0][0] = 0
     for i in range(len(cell)):
@@ -67,10 +60,8 @@ def get_cell(input_list, trellis):
     return cell
 
 
-""" Basic method which decode convolutional code using Viterbi algorithm """
-
-
 def decoder(input_str):
+    """ Basic method which decode convolutional code using Viterbi algorithm """
     input_list = input_str.split(" ")
     trellis = np.array([["00", "11"], ["11", "00"], ["10", "01"], ["01", "10"]])
     way = np.array([0 for i in range(len(input_list) + 1)])
