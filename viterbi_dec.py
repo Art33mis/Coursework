@@ -4,8 +4,9 @@ import math
 import numpy as np
 
 
-def coder(input_str):
+def coder(input_arr):
     """ Basic method which code convolutional code with R = 1/2 """
+    input_str = ''.join(list(map(str, map(chr, np.packbits(input_arr)))))
     output_str = ""
     shift_reg = "00"
     for i in range(len(input_str)):
@@ -13,7 +14,9 @@ def coder(input_str):
         output1 = (int(shift_reg[0]) + int(shift_reg[1]) + int(shift_reg[2])) % 2
         output2 = (int(shift_reg[0]) + int(shift_reg[2])) % 2
         output_str = output_str + str(output1) + str(output2) + " "
-    return output_str
+    output_list = list(map(str, map(ord, output_str[:-1])))
+    output_arr = np.unpackbits(np.uint8(output_list))
+    return output_arr
 
 
 def get_min_index(cell):
@@ -60,8 +63,9 @@ def get_cell(input_list, trellis):
     return cell
 
 
-def decoder(input_str):
+def decoder(input_arr):
     """ Basic method which decode convolutional code using Viterbi algorithm """
+    input_str = ''.join(list(map(str, map(chr, np.packbits(input_arr)))))
     input_list = input_str.split(" ")
     trellis = np.array([["00", "11"], ["11", "00"], ["10", "01"], ["01", "10"]])
     way = np.array([0 for i in range(len(input_list) + 1)])
@@ -75,8 +79,11 @@ def decoder(input_str):
                 output_str = output_str + "0"
             if way[i] == 1 or way[i] == 3:
                 output_str = output_str + "1"
-    return output_str
+    output_arr = np.unpackbits(np.uint8(list(output_str)))
+    return output_arr
 
 
-print(coder("11111"))
-print(decoder("11 01 10 10 10"))
+#print(coder(np.unpackbits(np.uint8(list(b'11111')))))
+#print(decoder(coder(np.unpackbits(np.uint8(list(b'11111'))))))
+
+
