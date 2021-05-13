@@ -63,6 +63,35 @@ def get_cell(input_list, trellis):
     return cell
 
 
+def st(input_str):
+    """This method creates an input signal for channel"""
+    input_arr = np.array(list(input_str), dtype=int)
+    output_arr = np.array([], dtype=int)
+    for i in range(len(input_arr)):
+        if input_arr[i] == 1:
+            output_arr = np.concatenate([output_arr, [0, 1, 0, 0]])
+        if input_arr[i] == 0:
+            output_arr = np.concatenate([output_arr, [1, 0, 0, 0]])
+    return output_arr
+
+
+def rt(input_arr):
+    """This method creates an output signal for channel"""
+    output_arr = np.array([], dtype=int)
+    for i in range(len(input_arr)):
+        r_com1 = np.random.randint(100) + np.random.randint(100)*1j
+        r_com2 = np.random.randint(100) + np.random.randint(100)*1j
+        r_poisson = np.random.poisson(10)
+        r = input_arr[i]*r_com1 + (r_poisson*(10**0.5) + 0.1**0.5)*r_com2
+        output_arr = np.append(output_arr,  int(r.real))
+    return output_arr
+
+
+def m_w(input_str):
+    return []
+
+
+
 def decoder(input_arr):
     """ Basic method which decode convolutional code using Viterbi algorithm """
     input_str = ''.join(list(map(str, map(chr, np.packbits(input_arr)))))
@@ -83,7 +112,12 @@ def decoder(input_arr):
     return output_arr
 
 
-#print(coder(np.unpackbits(np.uint8(list(b'11111')))))
-#print(decoder(coder(np.unpackbits(np.uint8(list(b'11111'))))))
+''' print(coder(np.unpackbits(np.uint8(list(b'11111')))))
+print(decoder(coder(np.unpackbits(np.uint8(list(b'11111'))))))
+print(np.unpackbits(np.uint8(list(b'hello'))))
+print(np.packbits(np.unpackbits(np.uint8(list(b'hello')))))
+print(np.argsort([1, 0, 1])) '''
+print(st("11"))
+print(rt(st("11")))
 
 
