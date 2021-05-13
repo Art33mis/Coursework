@@ -68,10 +68,7 @@ def st(input_str):
     input_arr = np.array(list(input_str), dtype=int)
     output_arr = np.zeros(len(input_str)*4)
     for i in range(len(input_arr)):
-        if input_arr[i] == 1:
-            output_arr[i*4:(i+1)*4] = [0, 1, 0, 0]
-        if input_arr[i] == 0:
-            output_arr[i*4:(i+1)*4] = [1, 0, 0, 0]
+        output_arr[i*4 + input_arr[i]] = 1
     return output_arr
 
 
