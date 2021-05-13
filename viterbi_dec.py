@@ -66,24 +66,24 @@ def get_cell(input_list, trellis):
 def st(input_str):
     """This method creates an input signal for channel"""
     input_arr = np.array(list(input_str), dtype=int)
-    output_arr = np.array([], dtype=int)
+    output_arr = np.zeros(len(input_str)*4)
     for i in range(len(input_arr)):
         if input_arr[i] == 1:
-            output_arr = np.concatenate([output_arr, [0, 1, 0, 0]])
+            output_arr[i*4:(i+1)*4] = [0, 1, 0, 0]
         if input_arr[i] == 0:
-            output_arr = np.concatenate([output_arr, [1, 0, 0, 0]])
+            output_arr[i*4:(i+1)*4] = [1, 0, 0, 0]
     return output_arr
 
 
 def rt(input_arr):
     """This method creates an output signal for channel"""
-    output_arr = np.array([], dtype=int)
+    output_arr = np.zeros(8)
     for i in range(len(input_arr)):
         r_com1 = np.random.normal(0, 1) + np.random.normal(0, 1)*1j
         r_com2 = np.random.normal(0, 1) + np.random.normal(0, 1)*1j
         r_poisson = np.random.poisson(0.1)
         r = input_arr[i]*r_com1 + (r_poisson*(10**0.5) + 0.1**0.5)*r_com2
-        output_arr = np.append(output_arr,  abs(r))
+        output_arr[i] = abs(r)
     return output_arr
 
 
