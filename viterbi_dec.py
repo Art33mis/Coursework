@@ -83,13 +83,12 @@ def rt(input_arr):
         r_com2 = np.random.normal(0, 1) + np.random.normal(0, 1)*1j
         r_poisson = np.random.poisson(0.1)
         r = input_arr[i]*r_com1 + (r_poisson*(10**0.5) + 0.1**0.5)*r_com2
-        output_arr = np.append(output_arr,  int(r.real))
+        output_arr = np.append(output_arr,  abs(r))
     return output_arr
 
 
-def m_w(input_str):
+def mann_whitney(input_str):
     return []
-
 
 
 def decoder(input_arr):
