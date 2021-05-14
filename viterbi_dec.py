@@ -18,21 +18,21 @@ def coder(input_arr):
     return output_arr
 
 
-def get_min_index(cell):
+def get_max_index(cell):
     """ This method return index of the smallest value in array """
     min_num = 0
     max_num = 0
-    min_ind = 0
+    max_ind = 0
     for i in range(len(cell)):
         if cell[i] > min_num:
             if i != 0:
                 if cell[i] >= cell[i - 1] and cell[i] > max_num:
-                    min_ind = i
+                    max_ind = i
                     max_num = cell[i]
                 if cell[i - 1] > cell[i] > max_num:
-                    min_ind = i - 1
+                    max_ind = i - 1
                     max_num = cell[i - 1]
-    return min_ind
+    return max_ind
 
 
 def hamming_distance(str1, str2):
@@ -120,7 +120,7 @@ def decoder():
     way = np.array([0 for i in range(len(input_arr) + 1)])
     cell = get_cell(input_arr, trellis)
     for i in range(len(cell)):
-        way[i] = get_min_index(cell[i])
+        way[i] = get_max_index(cell[i])
     output_str = ""
     for i in range(len(way)):
         if i != 0:
