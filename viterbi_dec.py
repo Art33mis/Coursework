@@ -35,20 +35,10 @@ def get_max_index(cell):
     return max_ind
 
 
-def hamming_distance(str1, str2):
-    """ Method return Hamming distance between two strings """
-    distance = 0
-    for i in range(len(str1)):
-        if str1[i] != str2[i]:
-            distance += 1
-    return distance
-
-
 def get_cell(input_arr, trellis):
     """ This method return trellis diagram """
     cell = np.array([[0] * 4 for i in range(len(input_arr) + 1)])
     cell[0][0] = 0
-    b = len(cell)
     for i in range(len(cell)):
         for j in range(len(cell[i])):
             if j == 0 and i != 0:
@@ -93,9 +83,7 @@ def channel(input_arr):
     input_arr = np.array(list(input_str.split(" ")))
     output_arr = np.array([np.zeros(8)]*len(input_arr))
     for i in range(len(input_arr)):
-        a = st(input_arr[i])
-        b = rt(a)
-        output_arr[i] = b
+        output_arr[i] = rt(st(input_arr[i]))
     return output_arr
 
 
@@ -113,9 +101,9 @@ def mann_whitney(input_arr, input_str):
     return crit
 
 
-def decoder():
+def decoder(ch_arr):
     """ Basic method which decode convolutional code using Viterbi algorithm """
-    input_arr = channel(coder(np.unpackbits(np.uint8(list(b'11111')))))
+    input_arr = np.array(ch_arr)
     trellis = np.array([["00", "11"], ["11", "00"], ["10", "01"], ["01", "10"]])
     way = np.array([0 for i in range(len(input_arr) + 1)])
     cell = get_cell(input_arr, trellis)
@@ -128,16 +116,10 @@ def decoder():
                 output_str = output_str + "0"
             if way[i] == 1 or way[i] == 3:
                 output_str = output_str + "1"
-    #output_arr = np.unpackbits(np.uint8(list(output_str)))
-    return output_str
+    output_arr = np.unpackbits(np.uint8(list(output_str)))
+    return output_arr
 
 
-#print(coder(np.unpackbits(np.uint8(list(b'11111')))))
-print(decoder())
-'''print(np.unpackbits(np.uint8(list(b'hello'))))
-print(np.packbits(np.unpackbits(np.uint8(list(b'hello')))))
-print(np.argsort([1, 0, 1])) 
-print(channel(coder(np.unpackbits(np.uint8(list(b'11111'))))))
-print(np.argsort([1.56, 0.54, 1.01, 0.22, 0.72, 0.48, 0.81, 2.35]))
-print(np.argsort([3, 5, 1, 4, 6, 2, 0, 7]))'''
+
+
 

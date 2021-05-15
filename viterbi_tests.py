@@ -2,20 +2,27 @@
 
 import unittest
 import viterbi_dec
+import numpy as np
 
 
 class MyTestCase(unittest.TestCase):
     """ Main test which check correctness of work Viterbi decoder """
-    def test_total(self, string="11 01 10 10 10"):
-        self.assertEqual(viterbi_dec.coder("11111")[:-1], string)
-        test_str = string
-        for i in range(len(test_str)):
-            if test_str[i] == '0':
-                test_str = test_str[:i] + "1" + test_str[i + 1:]
-            if test_str[i] == '1':
-                test_str = test_str[:i] + "0" + test_str[i + 1:]
-            self.assertEqual(viterbi_dec.decoder(test_str), "11111")
-            test_str = string
+    def test_total(self):
+        np.testing.assert_equal(viterbi_dec.coder(np.unpackbits(np.uint8(list(b'11001')))),
+                                np.array([0, 0, 1, 1, 0, 0, 0, 1, 0, 0, 1, 1, 0, 0, 0, 1, 0, 0, 1, 0, 0, 0,
+                                          0, 0, 0, 0, 1, 1, 0, 0, 0, 0, 0, 0, 1, 1, 0, 0, 0, 1, 0, 0, 1, 0,
+                                          0, 0, 0, 0, 0, 0, 1, 1, 0, 0, 0, 0, 0, 0, 1, 1, 0, 0, 0, 1, 0, 0,
+                                          1, 0, 0, 0, 0, 0, 0, 0, 1, 1, 0, 0, 0, 1, 0, 0, 1, 1, 0, 0, 0, 1,
+                                          0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 1, 1, 0, 0, 0, 1, 0, 0, 1, 1, 0, 0,
+                                          0, 1]))
+        np.testing.assert_equal(viterbi_dec.decoder(
+            [[0.21201117, 1.38878611, 0.21641654, 0.16558643, 0.38368259, 0.81867007, 0.39571225, 0.39621412],
+             [1.32135884, 0.51665333, 0.14455611, 0.48625509, 0.23134785, 0.54006278, 0.51208427, 0.72593613],
+             [0.20954949, 0.27975235, 0.28996464, 0.37723424, 0.0471354, 0.52974846, 0.44113387, 0.21804829],
+             [0.04068335, 0.98219413, 0.49478936, 1.9478348, 0.03572889, 3.59507614, 0.23340021, 0.3454459],
+             [0.03168453, 0.76681897, 0.40401801, 0.50848287, 0.54526408, 2.93351135, 0.30791741, 0.06540268]]),
+            np.array([0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+                      0, 0, 0, 0, 0, 0, 0, 0, 0, 1]))
 
 
 if __name__ == '__main__':
