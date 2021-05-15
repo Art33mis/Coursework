@@ -1,6 +1,6 @@
-# Viterbi Decoder
+# Statistical Convolutional Decoder
 
-> My realization of Viterbi decoder
+> My realization of Statistical Convolutional Decoder based on Mann–Whitney U test and Viterbi algorithm
 
 ## Technology stack
 
@@ -29,14 +29,14 @@
 
 4. Launch web application
     ```
-    python3 viterby_dec.py
+    python3 statistical_dec.py
     ```
     
 ### For Windows
 
 2. Launch web application
     ```
-    python viterby_dec.py
+    python statistical_dec.py
     ```
 
 

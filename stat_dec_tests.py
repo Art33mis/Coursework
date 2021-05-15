@@ -1,21 +1,21 @@
 """ This file contains tests for convolutional coder and Viterbi decoder """
 
 import unittest
-import viterbi_dec
+import statistical_dec
 import numpy as np
 
 
 class MyTestCase(unittest.TestCase):
     """ Main test which check correctness of work Viterbi decoder """
     def test_total(self):
-        np.testing.assert_equal(viterbi_dec.coder(np.unpackbits(np.uint8(list(b'11001')))),
+        np.testing.assert_equal(statistical_dec.coder(np.unpackbits(np.uint8(list(b'11001')))),
                                 np.array([0, 0, 1, 1, 0, 0, 0, 1, 0, 0, 1, 1, 0, 0, 0, 1, 0, 0, 1, 0, 0, 0,
                                           0, 0, 0, 0, 1, 1, 0, 0, 0, 0, 0, 0, 1, 1, 0, 0, 0, 1, 0, 0, 1, 0,
                                           0, 0, 0, 0, 0, 0, 1, 1, 0, 0, 0, 0, 0, 0, 1, 1, 0, 0, 0, 1, 0, 0,
                                           1, 0, 0, 0, 0, 0, 0, 0, 1, 1, 0, 0, 0, 1, 0, 0, 1, 1, 0, 0, 0, 1,
                                           0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 1, 1, 0, 0, 0, 1, 0, 0, 1, 1, 0, 0,
                                           0, 1]))
-        np.testing.assert_equal(viterbi_dec.decoder(
+        np.testing.assert_equal(statistical_dec.decoder(
             [[0.21201117, 1.38878611, 0.21641654, 0.16558643, 0.38368259, 0.81867007, 0.39571225, 0.39621412],
              [1.32135884, 0.51665333, 0.14455611, 0.48625509, 0.23134785, 0.54006278, 0.51208427, 0.72593613],
              [0.20954949, 0.27975235, 0.28996464, 0.37723424, 0.0471354, 0.52974846, 0.44113387, 0.21804829],
