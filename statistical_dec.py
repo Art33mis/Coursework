@@ -5,6 +5,7 @@ import numpy as np
 
 def coder(input_arr):
     """ Basic method which code convolutional code with R = 1/2 """
+    input_arr = np.insert(input_arr, len(input_arr), [0, 0])
     shift_reg = np.array([0, 0])
     output_arr = np.array([], dtype=int)
     for i in range(len(input_arr)):
@@ -14,41 +15,51 @@ def coder(input_arr):
     return output_arr
 
 
-def get_max_index(cell):
-    """ This method return index of the smallest value in array """
-    min_num = 0
-    max_num = 0
-    max_ind = 0
-    for i in range(len(cell)):
-        if cell[i] > min_num:
-            if i != 0:
-                if cell[i] >= cell[i - 1] and cell[i] >= max_num:
-                    max_ind = i
-                    max_num = cell[i]
-                if cell[i - 1] > cell[i] > max_num:
-                    max_ind = i - 1
-                    max_num = cell[i - 1]
-    return max_ind
+def get_way(input_arr):
+    """This method return the optimal trellis' way"""
+    input_arr = np.flip(input_arr, 0)
+    way = np. zeros(len(input_arr))
+    next_i = 0
+    next_j = 0
+    for i in range(len(input_arr)):
+        for j in range(len(input_arr[i])):
+            if i == next_i and j == next_j:
+                way[i] = j
+                next_i = i + 1
+                next_j = input_arr[i][j][1]
+    way = np.delete(way, -1)
+    return way
 
 
 def get_cell(input_arr, trellis):
     """ This method return trellis diagram """
-    cell = np.array([[0] * 4 for i in range(int(len(input_arr) / 8 + 1))])
+    cell = np.zeros((int(len(input_arr) / 8 + 1), 4, 2))
     for i in range(1, len(cell)):
         for j in range(len(cell[i])):
             if j < 2:
                 if i < 3:
-                    cell[i][j] = mann_whitney(input_arr[i - 1:i + 7], trellis[j][0:2]) + cell[i - 1][0]
+                    cell[i][j][0] = mann_whitney(input_arr[i - 1:i + 7], trellis[j][0:2]) + cell[i - 1][0][0]
                 else:
-                    cell[i][j] = max(mann_whitney(input_arr[i - 1:i + 7], trellis[j][0:2]) + cell[i - 1][0],
-                                     mann_whitney(input_arr[i - 1:i + 7], trellis[j][2:]) + cell[i - 1][2])
+                    term1 = mann_whitney(input_arr[i - 1:i + 7], trellis[j][0:2]) + cell[i - 1][0][0]
+                    term2 = mann_whitney(input_arr[i - 1:i + 7], trellis[j][2:]) + cell[i - 1][2][0]
+                    if term1 > term2:
+                        cell[i][j][0] = term1
+                    else:
+                        cell[i][j][0] = term2
+                        cell[i][j][1] = 2
             if j > 1 and i > 1:
                 if i < 3:
-                    cell[i][j] = mann_whitney(input_arr[i - 1:i + 7], trellis[j][0:2]) + cell[i - 1][1]
+                    cell[i][j][0] = mann_whitney(input_arr[i - 1:i + 7], trellis[j][0:2]) + cell[i - 1][1][0]
+                    cell[i][j][1] = 1
                 else:
-                    cell[i][j] = max(mann_whitney(input_arr[i - 1:i + 7], trellis[j][0:2]) + cell[i - 1][1],
-                                     mann_whitney(input_arr[i - 1:i + 7], trellis[j][2:]) + + cell[i - 1][3])
-
+                    term1 = mann_whitney(input_arr[i - 1:i + 7], trellis[j][0:2]) + cell[i - 1][1][0]
+                    term2 = mann_whitney(input_arr[i - 1:i + 7], trellis[j][2:]) + cell[i - 1][3][0]
+                    if term1 > term2:
+                        cell[i][j][0] = term1
+                        cell[i][j][1] = 1
+                    else:
+                        cell[i][j][0] = term2
+                        cell[i][j][1] = 3
     return cell
 
 
@@ -90,14 +101,12 @@ def decoder(input_arr):
     """ Basic method which decode convolutional code using Viterbi algorithm """
     trellis = np.array([[0, 0, 1, 1], [1, 1, 0, 0], [1, 0, 0, 1], [0, 1, 1, 0]])
     cell = get_cell(input_arr, trellis)
-    way = np.array([0 for i in range(int(len(input_arr) / 8 + 1))])
-    for i in range(len(cell)):
-        way[i] = get_max_index(cell[i])
-    way = np.delete(np.flip(way, 0), -1)
+    way = get_way(cell)
     output_arr = np.zeros(int(len(input_arr) / 8))
     for i in range(len(way)):
         if way[i] == 1 or way[i] == 3:
             output_arr[i] = 1
+    output_arr = output_arr[2:]
     return output_arr
 
 
