@@ -12,7 +12,7 @@
 
 1. Clone the repository and change the directory
     ```
-    git clone https://github.com/Art33mis/Coursework.git && cd Coursework
+    git clone https://github.com/Art33mis/Statistical-Convolutional-Decoder.git && cd Statistical-Convolutional-Decoder
     ```
 2. Install dependencies
    ```
